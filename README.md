@@ -11,11 +11,11 @@ Hamiltonian
 
 Trial wavefunction 
 
-<img src="http://latex.codecogs.com/gif.latex?\psi_T(x)=\exp\left(-\alpha\hspace{0}x^2\right)" border="0"/>
+<img src="http://latex.codecogs.com/gif.latex?\psi_T(x,\alpha)=\exp\left(-\alpha\hspace{0}x^2\right)" border="0"/>
 
 Local energy
 
-<img src="http://latex.codecogs.com/gif.latex?E_L(x)=\alpha+x^2\left(\frac{1}{2}-2\alpha^2\right)" border="0"/>
+<img src="http://latex.codecogs.com/gif.latex?E_L(x,\alpha)=\alpha+x^2\left(\frac{1}{2}-2\alpha^2\right)" border="0"/>
 
 
 Helium atom
@@ -35,8 +35,8 @@ where
 
 Trial wavefunction 
 
-<img src="http://latex.codecogs.com/gif.latex?\psi_T(\vec{r}_1,\vec{r}_2)=\exp\left(-2(r_1+r_2)+\frac{r_{12}}{2(1+\alpha\;r_{12})}\right)" border="0"/>
+<img src="http://latex.codecogs.com/gif.latex?\psi_T(\vec{r}_1,\vec{r}_2,\alpha)=\exp\left(-2(r_1+r_2)+\frac{r_{12}}{2(1+\alpha\;r_{12})}\right)" border="0"/>
 
 Local energy
 
-<img src="http://latex.codecogs.com/gif.latex?E_L(\vec{r}_1,\vec{r}_2)=-4+\left(\frac{\vec{r}_1}{r_1}-\frac{\vec{r}_2}{r_2}\right)\cdot\left(\vec{r}_1-\vec{r}_2\right)\frac{1}{r_{12}(1+\alpha\;r_{12})^2}-\frac{1}{r_{12}(1+\alpha\;r_{12})^3}-\frac{1}{4(1+\alpha\;r_{12})^4}+\frac{1}{r_{12}}" border="0"/>
+<img src="http://latex.codecogs.com/gif.latex?E_L(\vec{r}_1,\vec{r}_2,\alpha)=-4+\left(\frac{\vec{r}_1}{r_1}-\frac{\vec{r}_2}{r_2}\right)\cdot\left(\vec{r}_1-\vec{r}_2\right)\frac{1}{r_{12}(1+\alpha\;r_{12})^2}-\frac{1}{r_{12}(1+\alpha\;r_{12})^3}-\frac{1}{4(1+\alpha\;r_{12})^4}+\frac{1}{r_{12}}" border="0"/>
