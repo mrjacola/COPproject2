@@ -48,7 +48,7 @@ def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.2, new_
 
     if num_mc_steps <= num_thermalizing_steps:
         print("ERROR: Number of MC steps must be greater than number of thermalizing steps")
-        return 0, 0
+        return 0, 0, 0
 
     # Initialize walkers and energy
     counted_steps = num_mc_steps - num_thermalizing_steps
