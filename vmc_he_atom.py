@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # This program calculates ground state energy for the He-atom using Variational Monte Carlo
+# This version is used to calculate errors with bootstrapping
 
 
 def energy_local(r, alpha):
