@@ -1,26 +1,27 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# This program calculates ground state energy for the He-atom using Variational Monte Carlo
+# In this version Stochastic Gradient Approximation (SGA) is used to find optimal parameters
+
 
 def energy_local(r, alpha):
-
-    r1_unit_vec = np.multiply(r[:,:,0].T, 1/np.linalg.norm(r[:,:,0], axis=1)).T
-    r2_unit_vec = np.multiply(r[:,:,1].T, 1/np.linalg.norm(r[:,:,1], axis=1)).T
+    r1_unit_vec = np.multiply(r[:, :, 0].T, 1/np.linalg.norm(r[:, :, 0], axis=1)).T
+    r2_unit_vec = np.multiply(r[:, :, 1].T, 1/np.linalg.norm(r[:, :, 1], axis=1)).T
     r12 = r[:,:,0] - r[:,:,1]
     r12_norm = np.linalg.norm(r12, axis=1)
 
     return -4 + np.einsum('ij,ij->i', r1_unit_vec - r2_unit_vec, r12)/(r12_norm * (1 + alpha * r12_norm)**2) - \
-           1/(r12_norm * (1 + alpha * r12_norm)**3) - 1/(4 * (1 + alpha * r12_norm)**4) + 1/r12_norm
+            1/(r12_norm * (1 + alpha * r12_norm)**3) - 1/(4 * (1 + alpha * r12_norm)**4) + 1/r12_norm
 
 
 def trans_prob(r, r_p, alpha):
-
-    r1_norm = np.linalg.norm(r[:,:,0], axis=1)
-    r2_norm = np.linalg.norm(r[:,:,1], axis=1)
-    r1_p_norm = np.linalg.norm(r_p[:,:,0], axis=1)
-    r2_p_norm = np.linalg.norm(r_p[:,:,1], axis=1)
-    r12_norm = np.linalg.norm(r[:,:,0] - r[:,:,1], axis=1)
-    r12_p_norm = np.linalg.norm(r_p[:,:,0] - r_p[:,:,1], axis=1)
+    r1_norm = np.linalg.norm(r[:, :, 0], axis=1)
+    r2_norm = np.linalg.norm(r[:, :, 1], axis=1)
+    r1_p_norm = np.linalg.norm(r_p[:, :, 0], axis=1)
+    r2_p_norm = np.linalg.norm(r_p[:, :, 1], axis=1)
+    r12_norm = np.linalg.norm(r[:, :, 0] - r[:, :, 1], axis=1)
+    r12_p_norm = np.linalg.norm(r_p[:, :, 0] - r_p[:, :, 1], axis=1)
 
     psi = np.exp(-2*(r1_norm + r2_norm) + r12_norm/(2*(1 + alpha * r12_norm)))
     psi_p = np.exp(-2*(r1_p_norm + r2_p_norm) + r12_p_norm/(2*(1 + alpha * r12_p_norm)))
@@ -29,7 +30,7 @@ def trans_prob(r, r_p, alpha):
 
 
 def energy_grad(r, alpha):
-
+    # Calc gradient with respect to parameter alpha using SGA
     energy_l = energy_local(r, alpha)
     energy = np.average(energy_l)
     r12_norm = np.linalg.norm(r[:, :, 0] - r[:, :, 1], axis=1)
@@ -39,18 +40,16 @@ def energy_grad(r, alpha):
 
 
 def step_size(i):
+    # Specifies step-dependent step size used for gradient descent
     scale = 0.5
-    exponent = - 1.0
+    exponent = - 0.8
     return scale * np.power(i + 1.0, exponent)
 
 
-def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.2, new_walker_std=1.0):
+def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.13, new_walker_std=1.0):
+    # Performs the MC calculations
 
-    if num_mc_steps <= num_thermalizing_steps:
-        print("ERROR: Number of MC steps must be greater than number of thermalizing steps")
-        return 0, 0, 0
-
-    # Initialize walkers and energy
+    # Init
     counted_steps = num_mc_steps - num_thermalizing_steps
     walkers = np.random.rand(num_walkers, 3, 2)
     energy_estimator = np.zeros([counted_steps])
@@ -79,17 +78,20 @@ def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.2, new_
             alpha = alpha - step_size(actual_step) * energy_grad(walkers, alpha)
             alpha_estimator[actual_step] = alpha
 
-    accept_ratio = num_accept_jumps / (num_walkers*num_mc_steps)
+    accept_ratio = num_accept_jumps / (num_walkers * num_mc_steps)
 
     return energy_estimator, alpha_estimator, accept_ratio
 
 
 if __name__ == "__main__":
+    # Example on running calculations
 
+    # Parameters
     num_walk = 1000
-    num_steps = 50000
+    num_steps = 40000
     num_therm_steps = 5000
 
+    # Run
     energy_est, alpha_est, accept_rat = vmc_sga(num_walk, num_steps, num_therm_steps)
 
     print("Final energy: " + str(energy_est[-1]))
