@@ -85,7 +85,7 @@ if __name__ == "__main__":
     num_walk = 1000
     num_steps = 20000
     therm_steps = 5000
-    alphas = np.linspace(0.14, 0.145, num=19)
+    alphas = np.linspace(0.13, 0.16, num=31)
 
     # Init
     energies = np.zeros(len(alphas))
