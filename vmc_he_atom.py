@@ -101,7 +101,7 @@ if __name__ == "__main__":
         energy_est, accept_rat, walker_hist[:, :, :, :, i] = vmc(num_walk, num_steps, therm_steps, alpha=a,
                                                                  save_walker_history=swh)
 
-        # Average over final walkers
+        # Calculate energy
         energies[i] = np.average(energy_est)
 
         # Bootstrapping error estimation
