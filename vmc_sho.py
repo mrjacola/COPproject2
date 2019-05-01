@@ -16,7 +16,7 @@ def trans_prob(x, x_p, alpha):
 
 
 def boot_strap(nr_data_points, nr_samples, quantity):
-    # Calculates std's with bootstrapping 
+    # Calculates std's with bootstrapping
     random_choice = np.random.choice(quantity, (nr_data_points, nr_samples))
     sample = np.mean(random_choice, axis=0)
     return np.sqrt(nr_data_points - 1) * np.std(sample, ddof=1)
@@ -54,9 +54,8 @@ def vmc(num_walkers, num_mc_steps, num_therm_steps, alpha, new_walker_std=1.0):
 
 
 if __name__ == "__main__":
-
     # Example on running calculations, sweeps over different values of alpha
-    
+
     # Parameters
     num_walk = 100
     num_steps = 20000
@@ -83,7 +82,7 @@ if __name__ == "__main__":
         nr_data_points = len(energy_est)
         energies_error[i] = boot_strap(nr_data_points=nr_data_points, nr_samples=nr_samples, quantity=energy_est)
 
-        # Calc acceptance ratio
+        # Acceptance ratio
         accept_rats[i] = accept_rat
 
         i += 1
@@ -91,11 +90,18 @@ if __name__ == "__main__":
     print(energies)
     print(accept_rats)
 
+    # Analytical solution
+    alpha_analytical = np.linspace(alphas[0] - 0.01, alphas[-1] + 0.01, num=50)
+    energies_analytical = 0.5 * alpha_analytical + np.divide(1, 8 * alpha_analytical)
+
     fig = plt.figure()
     ax = fig.add_subplot(111)
+    ax.plot(alpha_analytical, energies_analytical, "black", linewidth=1.0, label="Analytical solution")
     ax.errorbar(alphas, energies, yerr=energies_error, ecolor="black", elinewidth=1.0, capsize=3,
-                marker="*", color="red", linestyle="--", linewidth=1.0, label="VMC")
-    ax.legend()
-    ax.set_xlabel(r"$\alpha$")
-    ax.set_ylabel("Energy estimation")
+                marker="*", color="red", linestyle="", linewidth=1.0, label="VMC")
+    ax.legend(fontsize=14)
+    ax.set_xticks(np.linspace(alphas[0], alphas[-1], num=10))
+    ax.set_xlabel(r"$\alpha$", fontsize=12)
+    ax.set_ylabel("Energy estimation", fontsize=12)
+    ax.set_title("Harmonic oscillator", fontsize=14)
     plt.show()
