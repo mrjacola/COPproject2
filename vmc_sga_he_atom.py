@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # This program calculates ground state energy for the He-atom using Variational Monte Carlo
-# In this version Stochastic Gradient Approximation (SGA) is used to find optimal parameters
+# In this version Stochastic Gradient Approximation (SGA) is used to estimate optimal parameters
 
 
 def energy_local(r, alpha):
@@ -46,7 +46,7 @@ def step_size(i):
     return scale * np.power(i + 1.0, exponent)
 
 
-def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.13, new_walker_std=1.0):
+def vmc_sga(num_walkers, num_mc_steps, num_thermalizing_steps, alpha_0=0.2, new_walker_std=1.0):
     # Performs the MC calculations
 
     # Init
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 
     # Parameters
     num_walk = 1000
-    num_steps = 40000
+    num_steps = 50000
     num_therm_steps = 5000
 
     # Run
